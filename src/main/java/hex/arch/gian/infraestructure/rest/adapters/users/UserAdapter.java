@@ -1,10 +1,9 @@
 package hex.arch.gian.infraestructure.rest.adapters.users;
 
 import hex.arch.gian.domain.models.users.DomainUser;
-import hex.arch.gian.domain.models.users.userData.CreateUserData;
-import hex.arch.gian.domain.models.users.userData.UpdateUserData;
-import hex.arch.gian.domain.models.users.userData.UserData;
 import hex.arch.gian.domain.ports.primaries.UserService;
+import hex.arch.gian.infraestructure.rest.models.users.UserDTO;
+import hex.arch.gian.infraestructure.rest.models.users.UserRequest;
 import hex.arch.gian.infraestructure.rest.models.users.createuser.CreateUserRequest;
 import hex.arch.gian.infraestructure.rest.models.users.createuser.CreateUserResponse;
 import hex.arch.gian.infraestructure.rest.models.users.createuser.UpdateUserRequest;
@@ -13,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -20,49 +20,48 @@ public class UserAdapter {
 
   private final UserService userService;
 
-  public List<DomainUser> getAllUsers() {
-    return userService.getAllUsers();
+  public List<UserDTO> getAllUsers() {
+    return userService.getAllUsers().stream().map(this::buildUserDTO).collect(Collectors.toList());
   }
 
-  public DomainUser getUserById(final long codUser) {
-    return userService.getUserById(codUser);
+  public UserDTO getUserById(final long codUser) {
+    DomainUser user = userService.getUserById(codUser);
+    return buildUserDTO(user);
   }
 
   public CreateUserResponse createUser(final CreateUserRequest createUserRequest) {
-    CreateUserData userData =
-        CreateUserData.builder()
-            .codUser(createUserRequest.getCodUser())
-            .txtName(createUserRequest.getTxtName())
-            .txtSurname(createUserRequest.getTxtSurname())
-            .build();
 
-    DomainUser createdUser = userService.createUser(userData);
+    DomainUser createdUser = userService.createUser(buildDomainUserFromRequest(createUserRequest));
 
-    return CreateUserResponse.builder()
-        .codUser(createdUser.getCodUser())
-        .txtName(createdUser.getTxtName())
-        .txtSurname(createdUser.getTxtSurname())
-        .build();
+    return CreateUserResponse.builder().userDTO(buildUserDTO(createdUser)).build();
   }
 
-  public UpdateUserResponse updateUser(final UpdateUserRequest updateUserRequest) {
-    UpdateUserData updateUserData =
-        UpdateUserData.builder()
-            .codUser(updateUserRequest.getCodUser())
-            .txtName(updateUserRequest.getTxtName())
-            .txtSurname(updateUserRequest.getTxtSurname())
-            .build();
+  public UpdateUserResponse updateUser(
+      final long codUser, final UpdateUserRequest updateUserRequest) {
 
-    DomainUser updateUser = userService.updateUser(updateUserData);
+    DomainUser updateUser =
+        userService.updateUser(codUser, buildDomainUserFromRequest(updateUserRequest));
 
-    return UpdateUserResponse.builder()
-        .codUser(updateUser.getCodUser())
-        .txtName(updateUser.getTxtName())
-        .txtSurname(updateUser.getTxtSurname())
-        .build();
+    return UpdateUserResponse.builder().userDTO(buildUserDTO(updateUser)).build();
   }
 
   public void deleteUserById(final long codUser) {
     userService.deleteUserById(codUser);
+  }
+
+  private UserDTO buildUserDTO(final DomainUser domainUser) {
+    return UserDTO.builder()
+        .codUser(domainUser.getCodUser())
+        .txtName(domainUser.getTxtName())
+        .txtSurname(domainUser.getTxtSurname())
+        .build();
+  }
+
+  private DomainUser buildDomainUserFromRequest(final UserRequest userRequest) {
+    return DomainUser.builder()
+        .codUser(userRequest.getUserDTO().getCodUser())
+        .txtName(userRequest.getUserDTO().getTxtName())
+        .txtSurname(userRequest.getUserDTO().getTxtSurname())
+        .build();
   }
 }

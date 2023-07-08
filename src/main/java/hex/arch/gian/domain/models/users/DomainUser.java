@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Data
 @Builder
 public class DomainUser implements Serializable {
-    private long codUser;
+    private Long codUser;
     private String txtName;
     private String txtSurname;
 }

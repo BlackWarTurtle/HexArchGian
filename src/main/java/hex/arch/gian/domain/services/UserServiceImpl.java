@@ -1,38 +1,57 @@
 package hex.arch.gian.domain.services;
 
 import hex.arch.gian.domain.models.users.DomainUser;
-import hex.arch.gian.domain.models.users.userData.CreateUserData;
-import hex.arch.gian.domain.models.users.userData.UpdateUserData;
 import hex.arch.gian.domain.ports.primaries.UserService;
+import hex.arch.gian.domain.ports.secondaries.UserPort;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Override
-    public List<DomainUser> getAllUsers() {
-        return null;
+  private static final String USER_NOT_FOUND_EXCEPTION_MSG = "User Not Found";
+
+  private final UserPort userPort;
+
+  @Override
+  public List<DomainUser> getAllUsers() {
+    return userPort.getAllUsers();
+  }
+
+  @Override
+  public DomainUser getUserById(final long codUser) {
+    return userPort.getUserById(codUser).orElseThrow(this::buildExceptionWhenNotFoundUser);
+  }
+
+  @Override
+  public DomainUser createUser(final DomainUser domainUser) {
+    return userPort.createUser(domainUser);
+  }
+
+  @Override
+  public DomainUser updateUser(final long codUser, final DomainUser domainUser) {
+    if (!userPort.existsById(codUser)) {
+      throw buildExceptionWhenNotFoundUser();
     }
 
-    @Override
-    public DomainUser getUserById(final long codUser) {
-        return null;
+    return userPort.updateUser(domainUser);
+  }
+
+  @Override
+  public void deleteUserById(final long codUser) {
+    if (!userPort.existsById(codUser)) {
+      throw buildExceptionWhenNotFoundUser();
     }
 
-    @Override
-    public DomainUser createUser(final CreateUserData createUserData) {
-        return null;
-    }
+    userPort.deleteUserById(codUser);
+  }
 
-    @Override
-    public DomainUser updateUser(final UpdateUserData updateUserData) {
-        return null;
-    }
-
-    @Override
-    public void deleteUserById(final long codUser) {
-
-    }
+  private ResponseStatusException buildExceptionWhenNotFoundUser() {
+    return new ResponseStatusException(HttpStatus.NOT_FOUND, USER_NOT_FOUND_EXCEPTION_MSG);
+  }
 }

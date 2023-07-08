@@ -1,8 +1,6 @@
 package hex.arch.gian.domain.ports.secondaries;
 
 import hex.arch.gian.domain.models.users.DomainUser;
-import hex.arch.gian.domain.models.users.userData.CreateUserData;
-import hex.arch.gian.domain.models.users.userData.UpdateUserData;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,9 +11,11 @@ public interface UserPort {
 
     Optional<DomainUser> getUserById(final long codUser);
 
-    DomainUser createUser(final CreateUserData createUserData);
+    DomainUser createUser(final DomainUser domainUser);
 
-    DomainUser updateUser(final UpdateUserData updateUserData);
+    DomainUser updateUser(final DomainUser domainUser);
 
     void deleteUserById(final long codUser);
+
+    boolean existsById(final long codUser);
 }

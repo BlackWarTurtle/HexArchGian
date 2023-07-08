@@ -1,12 +1,15 @@
 package hex.arch.gian.infraestructure.rest.models.users;
 
-import lombok.Data;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-@Data
+@Getter
+@Setter
 @SuperBuilder(toBuilder = true)
+@NoArgsConstructor
 public abstract class UserRequest {
-    long codUser;
-    String txtName;
-    String txtSurname;
+  @NotNull UserDTO userDTO;
 }

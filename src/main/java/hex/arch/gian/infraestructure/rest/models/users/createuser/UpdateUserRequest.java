@@ -1,9 +1,11 @@
 package hex.arch.gian.infraestructure.rest.models.users.createuser;
 
 import hex.arch.gian.infraestructure.rest.models.users.UserRequest;
-import lombok.EqualsAndHashCode;
-import lombok.Value;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @EqualsAndHashCode(callSuper = true)
-@Value
+@Getter
+@Setter
+@SuperBuilder(toBuilder = true)
 public class UpdateUserRequest extends UserRequest {}
