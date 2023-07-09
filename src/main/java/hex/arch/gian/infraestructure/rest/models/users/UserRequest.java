@@ -1,5 +1,6 @@
 package hex.arch.gian.infraestructure.rest.models.users;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,5 +12,5 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 public abstract class UserRequest {
-  @NotNull UserDTO userDTO;
+  @NotNull @Valid UserDTO userDTO;
 }

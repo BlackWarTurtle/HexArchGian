@@ -1,4 +1,4 @@
-package hex.arch.gian.infraestructure.rest.models.users.createuser;
+package hex.arch.gian.infraestructure.rest.models.users.updateuser;
 
 import hex.arch.gian.infraestructure.rest.models.users.UserResponse;
 import lombok.EqualsAndHashCode;

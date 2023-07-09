@@ -1,13 +1,14 @@
 package hex.arch.gian.infraestructure.rest.adapters.users;
 
+import hex.arch.gian.domain.models.enums.UserTypeEnum;
 import hex.arch.gian.domain.models.users.DomainUser;
 import hex.arch.gian.domain.ports.primaries.UserService;
 import hex.arch.gian.infraestructure.rest.models.users.UserDTO;
 import hex.arch.gian.infraestructure.rest.models.users.UserRequest;
 import hex.arch.gian.infraestructure.rest.models.users.createuser.CreateUserRequest;
 import hex.arch.gian.infraestructure.rest.models.users.createuser.CreateUserResponse;
-import hex.arch.gian.infraestructure.rest.models.users.createuser.UpdateUserRequest;
-import hex.arch.gian.infraestructure.rest.models.users.createuser.UpdateUserResponse;
+import hex.arch.gian.infraestructure.rest.models.users.updateuser.UpdateUserRequest;
+import hex.arch.gian.infraestructure.rest.models.users.updateuser.UpdateUserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -54,6 +55,7 @@ public class UserAdapter {
         .codUser(domainUser.getCodUser())
         .txtName(domainUser.getTxtName())
         .txtSurname(domainUser.getTxtSurname())
+        .indType(domainUser.getUserType().getCode())
         .build();
   }
 
@@ -62,6 +64,7 @@ public class UserAdapter {
         .codUser(userRequest.getUserDTO().getCodUser())
         .txtName(userRequest.getUserDTO().getTxtName())
         .txtSurname(userRequest.getUserDTO().getTxtSurname())
+        .userType(UserTypeEnum.fromCode(userRequest.getUserDTO().getIndType()))
         .build();
   }
 }

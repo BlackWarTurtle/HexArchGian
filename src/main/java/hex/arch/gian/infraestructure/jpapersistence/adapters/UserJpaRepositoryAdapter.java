@@ -2,7 +2,7 @@ package hex.arch.gian.infraestructure.jpapersistence.adapters;
 
 import hex.arch.gian.domain.models.users.DomainUser;
 import hex.arch.gian.domain.ports.secondaries.UserPort;
-import hex.arch.gian.infraestructure.jpapersistence.models.User;
+import hex.arch.gian.infraestructure.jpapersistence.models.users.User;
 import hex.arch.gian.infraestructure.jpapersistence.repositories.UsersJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -63,6 +63,7 @@ public class UserJpaRepositoryAdapter implements UserPort {
         .codUser(user.getCodUser())
         .txtName(user.getTxtName())
         .txtSurname(user.getTxtSurname())
+        .userType(user.getUserType())
         .build();
   }
 
@@ -75,6 +76,7 @@ public class UserJpaRepositoryAdapter implements UserPort {
 
     userBuilder.txtName(domainUser.getTxtName());
     userBuilder.txtSurname(domainUser.getTxtSurname());
+    userBuilder.userType(domainUser.getUserType());
 
     return userBuilder.build();
   }

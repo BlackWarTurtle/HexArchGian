@@ -1,5 +1,6 @@
 package hex.arch.gian.domain.services;
 
+import hex.arch.gian.config.exceptions.ValidationException;
 import hex.arch.gian.domain.models.users.DomainUser;
 import hex.arch.gian.domain.ports.primaries.UserService;
 import hex.arch.gian.domain.ports.secondaries.UserPort;
@@ -51,7 +52,7 @@ public class UserServiceImpl implements UserService {
     userPort.deleteUserById(codUser);
   }
 
-  private ResponseStatusException buildExceptionWhenNotFoundUser() {
-    return new ResponseStatusException(HttpStatus.NOT_FOUND, USER_NOT_FOUND_EXCEPTION_MSG);
+  private ValidationException buildExceptionWhenNotFoundUser() {
+    return new ValidationException(HttpStatus.NOT_FOUND, USER_NOT_FOUND_EXCEPTION_MSG);
   }
 }

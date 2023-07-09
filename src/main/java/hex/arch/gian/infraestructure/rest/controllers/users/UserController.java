@@ -4,8 +4,9 @@ import hex.arch.gian.infraestructure.rest.adapters.users.UserAdapter;
 import hex.arch.gian.infraestructure.rest.models.users.UserDTO;
 import hex.arch.gian.infraestructure.rest.models.users.createuser.CreateUserRequest;
 import hex.arch.gian.infraestructure.rest.models.users.createuser.CreateUserResponse;
-import hex.arch.gian.infraestructure.rest.models.users.createuser.UpdateUserRequest;
-import hex.arch.gian.infraestructure.rest.models.users.createuser.UpdateUserResponse;
+import hex.arch.gian.infraestructure.rest.models.users.updateuser.UpdateUserRequest;
+import hex.arch.gian.infraestructure.rest.models.users.updateuser.UpdateUserResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,14 +33,14 @@ public class UserController {
 
   @PostMapping
   public ResponseEntity<CreateUserResponse> createUser(
-      @RequestBody CreateUserRequest createUserRequest) {
+      @RequestBody @Valid CreateUserRequest createUserRequest) {
 
     return new ResponseEntity<>(userAdapter.createUser(createUserRequest), HttpStatus.CREATED);
   }
 
   @PutMapping("/{codUser}")
   public ResponseEntity<UpdateUserResponse> updateUser(
-      @PathVariable final long codUser, @RequestBody UpdateUserRequest updateUserRequest) {
+      @PathVariable final long codUser, @Valid @RequestBody UpdateUserRequest updateUserRequest) {
     return new ResponseEntity<>(userAdapter.updateUser(codUser, updateUserRequest), HttpStatus.OK);
   }
 
