@@ -5,6 +5,7 @@ import hex.arch.gian.domain.models.users.DomainUser;
 import hex.arch.gian.domain.ports.primaries.UserService;
 import hex.arch.gian.domain.ports.secondaries.UserPort;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
 
   private static final String USER_NOT_FOUND_EXCEPTION_MSG = "User Not Found";
