@@ -25,6 +25,10 @@ public class UserAdapter {
     return userService.getAllUsers().stream().map(this::buildUserDTO).collect(Collectors.toList());
   }
 
+  public void createGraph() {
+    userService.createGraph();
+  }
+
   public UserDTO getUserById(final long codUser) {
     DomainUser user = userService.getUserById(codUser);
     return buildUserDTO(user);

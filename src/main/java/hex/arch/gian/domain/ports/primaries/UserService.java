@@ -16,4 +16,5 @@ public interface UserService {
 
     void deleteUserById(final long codUser);
 
+    void createGraph();
 }

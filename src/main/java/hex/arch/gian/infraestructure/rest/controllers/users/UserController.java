@@ -32,6 +32,12 @@ public class UserController {
     return new ResponseEntity<>(userAdapter.getUserById(codUser), HttpStatus.OK);
   }
 
+  @PostMapping("/createGraph")
+  public ResponseEntity<Void> createGraph() {
+    userAdapter.createGraph();
+    return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+  }
+
   @PostMapping
   public ResponseEntity<CreateUserResponse> createUser(
       @RequestBody @Valid CreateUserRequest createUserRequest) {

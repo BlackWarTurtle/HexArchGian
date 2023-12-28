@@ -24,6 +24,6 @@ public class MdcInterceptor implements HandlerInterceptor {
     }
 
     private String getCorrelationId() {
-        return "gianID" + UUID.randomUUID().toString();
+        return "gianID " + UUID.randomUUID().toString();
     }
 }

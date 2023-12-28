@@ -1,15 +1,27 @@
 package hex.arch.gian.domain.services;
 
+import com.mxgraph.layout.mxCircleLayout;
+import com.mxgraph.layout.mxIGraphLayout;
+import com.mxgraph.util.mxCellRenderer;
 import hex.arch.gian.config.exceptions.ValidationException;
 import hex.arch.gian.domain.models.users.DomainUser;
 import hex.arch.gian.domain.ports.primaries.UserService;
 import hex.arch.gian.domain.ports.secondaries.UserPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jgrapht.ext.JGraphXAdapter;
+import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleGraph;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -52,6 +64,29 @@ public class UserServiceImpl implements UserService {
     }
 
     userPort.deleteUserById(codUser);
+  }
+
+  @Override
+  public void createGraph() {
+    DefaultDirectedGraph<String, DefaultEdge> g = new DefaultDirectedGraph<>(DefaultEdge.class);
+    g.addVertex("v1");
+    g.addVertex("v2");
+    g.addEdge("v1", "v2");
+
+    JGraphXAdapter<String, DefaultEdge> adapter = new JGraphXAdapter<>(g);
+
+    mxIGraphLayout layout = new mxCircleLayout(adapter);
+
+    layout.execute(adapter.getDefaultParent());
+
+    BufferedImage image =
+        mxCellRenderer.createBufferedImage(adapter, null, 2, Color.WHITE, true, null);
+    File imgFile = new File("C:\\Users\\gian6\\Pictures\\graph.png");
+
+    try {
+      ImageIO.write(image, "PNG", imgFile);
+    } catch (IOException ignored) {
+    }
   }
 
   private ValidationException buildExceptionWhenNotFoundUser() {
