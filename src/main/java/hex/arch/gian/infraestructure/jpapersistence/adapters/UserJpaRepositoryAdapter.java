@@ -1,16 +1,15 @@
 package hex.arch.gian.infraestructure.jpapersistence.adapters;
 
 import hex.arch.gian.domain.models.users.DomainUser;
-import hex.arch.gian.domain.ports.secondaries.UserPort;
+import hex.arch.gian.domain.ports.secondaries.users.UserPort;
+import hex.arch.gian.infraestructure.jpapersistence.mappers.UserMapper;
+import hex.arch.gian.infraestructure.jpapersistence.mappers.UserToDomainMapper;
 import hex.arch.gian.infraestructure.jpapersistence.models.users.User;
 import hex.arch.gian.infraestructure.jpapersistence.repositories.UsersJpaRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-import org.springframework.util.ObjectUtils;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
@@ -18,34 +17,35 @@ public class UserJpaRepositoryAdapter implements UserPort {
 
   private final UsersJpaRepository usersJpaRepository;
 
+  private final UserMapper userMapper;
+  private final UserToDomainMapper userToDomainMapper;
+
   @Override
   public List<DomainUser> getAllUsers() {
-    return usersJpaRepository.findAll().stream()
-        .map(this::buildDomainUser)
-        .collect(Collectors.toList());
+    return usersJpaRepository.findAll().stream().map(userToDomainMapper).toList();
   }
 
   @Override
   public Optional<DomainUser> getUserById(long codUser) {
-    return usersJpaRepository.findById(codUser).map(this::buildDomainUser);
+    return usersJpaRepository.findById(codUser).map(userToDomainMapper);
   }
 
   @Override
   public DomainUser createUser(final DomainUser domainUser) {
-    User user = buildUser(domainUser);
+    User user = userMapper.apply(domainUser);
 
     User savedUser = usersJpaRepository.saveAndFlush(user);
 
-    return buildDomainUser(savedUser);
+    return userToDomainMapper.apply(savedUser);
   }
 
   @Override
   public DomainUser updateUser(final DomainUser domainUser) {
-    User user = buildUser(domainUser);
+    User user = userMapper.apply(domainUser);
 
     User updatedUser = usersJpaRepository.saveAndFlush(user);
 
-    return buildDomainUser(updatedUser);
+    return userToDomainMapper.apply(updatedUser);
   }
 
   @Override
@@ -56,28 +56,5 @@ public class UserJpaRepositoryAdapter implements UserPort {
   @Override
   public boolean existsById(final long codUser) {
     return usersJpaRepository.existsById(codUser);
-  }
-
-  private DomainUser buildDomainUser(final User user) {
-    return DomainUser.builder()
-        .codUser(user.getCodUser())
-        .txtName(user.getTxtName())
-        .txtSurname(user.getTxtSurname())
-        .userType(user.getUserType())
-        .build();
-  }
-
-  private User buildUser(final DomainUser domainUser) {
-    var userBuilder = User.builder();
-
-    if (!ObjectUtils.isEmpty(domainUser.getCodUser())) {
-      userBuilder.codUser(domainUser.getCodUser());
-    }
-
-    userBuilder.txtName(domainUser.getTxtName());
-    userBuilder.txtSurname(domainUser.getTxtSurname());
-    userBuilder.userType(domainUser.getUserType());
-
-    return userBuilder.build();
   }
 }

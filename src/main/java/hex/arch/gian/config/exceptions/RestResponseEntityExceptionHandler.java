@@ -1,11 +1,9 @@
 package hex.arch.gian.config.exceptions;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -68,23 +66,4 @@ public class RestResponseEntityExceptionHandler {
       ValidationException exception) {
     return new ResponseEntity<>(exception.getValidationExceptionLog(), exception.getHttpStatus());
   }
-
-  /*@ExceptionHandler(InvalidFormatException.class)
-  public void handleOfflineBankApi(HttpServletResponse response, InvalidFormatException ex)
-      throws IOException {
-
-    Class<?> targetType = ex.getTargetType();
-    if(targetType instanceof EnumBase) {
-      response.sendError(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
-
-    }
-
-    if (ex.getTargetType().isAssignableFrom(EnumBase.class)) {
-      response.sendError(HttpStatus.BAD_REQUEST.value(), "GIAN ERROR");
-    } else {
-      response.sendError(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
-    }
-  }
-  */
-
 }

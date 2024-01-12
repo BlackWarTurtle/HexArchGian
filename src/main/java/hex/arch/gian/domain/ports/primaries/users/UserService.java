@@ -1,4 +1,4 @@
-package hex.arch.gian.domain.ports.primaries;
+package hex.arch.gian.domain.ports.primaries.users;
 
 import hex.arch.gian.domain.models.users.DomainUser;
 

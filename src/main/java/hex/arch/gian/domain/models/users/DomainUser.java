@@ -6,12 +6,14 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
 public class DomainUser implements Serializable {
-    private Long codUser;
-    private String txtName;
-    private String txtSurname;
+    private Long id;
+    private String name;
+    private String surname;
     private UserTypeEnum userType;
+    private LocalDateTime birthDate;
 }

@@ -5,6 +5,7 @@ import hex.arch.gian.infraestructure.jpapersistence.models.exams.Exam;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -18,17 +19,21 @@ public class User {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "COD_USER", nullable = false)
-  private long codUser;
+  @Column(name = "ID", nullable = false)
+  private long id;
 
-  @Column(name = "TXT_NAME", nullable = false)
-  private String txtName;
+  @Column(name = "NAME", nullable = false)
+  private String name;
 
-  @Column(name = "TXT_SURNAME", nullable = false)
-  private String txtSurname;
+  @Column(name = "SURNAME", nullable = false)
+  private String surname;
 
-  @Column(name = "IND_TYPE", nullable = false)
+  @Column(name = "TYPE", nullable = false)
   private UserTypeEnum userType;
+
+
+  @Column(name = "BIRTH_DATE", nullable = false)
+  private LocalDateTime birthDate;
 
   @OneToMany(
       mappedBy = "student",

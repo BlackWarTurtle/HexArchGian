@@ -5,24 +5,21 @@ import com.mxgraph.layout.mxIGraphLayout;
 import com.mxgraph.util.mxCellRenderer;
 import hex.arch.gian.config.exceptions.ValidationException;
 import hex.arch.gian.domain.models.users.DomainUser;
-import hex.arch.gian.domain.ports.primaries.UserService;
-import hex.arch.gian.domain.ports.secondaries.UserPort;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.jgrapht.ext.JGraphXAdapter;
-import org.jgrapht.graph.DefaultDirectedGraph;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleGraph;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
-import javax.imageio.ImageIO;
+import hex.arch.gian.domain.ports.primaries.users.UserService;
+import hex.arch.gian.domain.ports.secondaries.users.UserPort;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import javax.imageio.ImageIO;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.jgrapht.ext.JGraphXAdapter;
+import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.DefaultEdge;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -81,7 +78,7 @@ public class UserServiceImpl implements UserService {
 
     BufferedImage image =
         mxCellRenderer.createBufferedImage(adapter, null, 2, Color.WHITE, true, null);
-    File imgFile = new File("C:\\Users\\gian6\\Pictures\\graph.png");
+    File imgFile = new File("C:\\my\\local\\path\\graph.png");
 
     try {
       ImageIO.write(image, "PNG", imgFile);
