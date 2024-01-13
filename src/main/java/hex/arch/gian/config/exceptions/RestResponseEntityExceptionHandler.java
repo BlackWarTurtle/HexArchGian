@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
@@ -58,12 +59,7 @@ public class RestResponseEntityExceptionHandler {
   }
 
   @ExceptionHandler(ValidationException.class)
-  public ResponseEntity<Object> handleValidationExceptions(ValidationException exception) {
-    return buildResponseEntityFromValidationException(exception);
-  }
-
-  private ResponseEntity<Object> buildResponseEntityFromValidationException(
-      ValidationException exception) {
-    return new ResponseEntity<>(exception.getValidationExceptionLog(), exception.getHttpStatus());
+  public ProblemDetail handleValidationExceptions(ValidationException exception) {
+    return ProblemDetail.forStatusAndDetail(exception.getHttpStatus(), exception.getErrorMessage());
   }
 }

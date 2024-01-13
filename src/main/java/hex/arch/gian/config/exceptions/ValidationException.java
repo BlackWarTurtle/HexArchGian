@@ -8,13 +8,11 @@ public class ValidationException extends RuntimeException {
 
   private final HttpStatus httpStatus;
 
-  private final ValidationExceptionLog validationExceptionLog;
+  private final String errorMessage;
 
   public ValidationException(HttpStatus httpStatus, String errorMessage) {
     super(errorMessage);
     this.httpStatus = httpStatus;
-    validationExceptionLog = new ValidationExceptionLog(httpStatus, errorMessage);
+    this.errorMessage = errorMessage;
   }
-
-  private record ValidationExceptionLog(HttpStatus httpStatus, String errorMessage) {}
 }
