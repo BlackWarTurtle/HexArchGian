@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 public class TokenCoinBaseProviderImpl implements TokenCoinBaseProvider {
 
   private static final String COIN_BASE_URL_BASE = "https://api.coinbase.com";
+  private static final String ERROR_PARSING_RESPONSE = "error.parsing.response";
 
   private final ObjectMapper objectMapper;
 
@@ -76,14 +77,11 @@ public class TokenCoinBaseProviderImpl implements TokenCoinBaseProvider {
   }
 
   private CoinBaseTokenDTO processResult(String result) {
-    throw new ValidationException(
-            HttpStatus.INTERNAL_SERVER_ERROR, "error.parsing.response");
-    /*try {
+    try {
       return objectMapper.readValue(result, CoinBaseTokenDTO.class);
     } catch (JsonProcessingException e) {
-      throw new ValidationException(
-          HttpStatus.INTERNAL_SERVER_ERROR, "error.parsing.response");
-    }*/
+      throw new ValidationException(HttpStatus.INTERNAL_SERVER_ERROR, ERROR_PARSING_RESPONSE);
+    }
   }
 
   private HttpRequest buildTokenHttpRequest(String tokenId) {
