@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,7 +17,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class RestResponseEntityExceptionHandler {
+
+  private final ResourceBundleMessageSource messageSource;
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -60,6 +65,9 @@ public class RestResponseEntityExceptionHandler {
 
   @ExceptionHandler(ValidationException.class)
   public ProblemDetail handleValidationExceptions(ValidationException exception) {
-    return ProblemDetail.forStatusAndDetail(exception.getHttpStatus(), exception.getErrorMessage());
+    String translatedMsg =
+        messageSource.getMessage(
+            exception.getErrorMessage(), null, LocaleContextHolder.getLocale());
+    return ProblemDetail.forStatusAndDetail(exception.getHttpStatus(), translatedMsg);
   }
 }

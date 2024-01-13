@@ -76,12 +76,14 @@ public class TokenCoinBaseProviderImpl implements TokenCoinBaseProvider {
   }
 
   private CoinBaseTokenDTO processResult(String result) {
-    try {
+    throw new ValidationException(
+            HttpStatus.INTERNAL_SERVER_ERROR, "error.parsing.response");
+    /*try {
       return objectMapper.readValue(result, CoinBaseTokenDTO.class);
     } catch (JsonProcessingException e) {
       throw new ValidationException(
-          HttpStatus.INTERNAL_SERVER_ERROR, "Error parsing response from coinbase");
-    }
+          HttpStatus.INTERNAL_SERVER_ERROR, "error.parsing.response");
+    }*/
   }
 
   private HttpRequest buildTokenHttpRequest(String tokenId) {
