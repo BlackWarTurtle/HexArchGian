@@ -1,6 +1,8 @@
 package hex.arch.gian.infraestructure.jpapersistence.adapters;
 
+import hex.arch.gian.annotations.jpa.JpaComponent;
 import hex.arch.gian.domain.models.users.DomainUser;
+import hex.arch.gian.domain.models.users.JpaDomainUser;
 import hex.arch.gian.domain.ports.secondaries.users.UserPort;
 import hex.arch.gian.infraestructure.jpapersistence.mappers.UserMapper;
 import hex.arch.gian.infraestructure.jpapersistence.mappers.UserToDomainMapper;
@@ -9,12 +11,11 @@ import hex.arch.gian.infraestructure.jpapersistence.repositories.UsersJpaReposit
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@ConditionalOnProperty(prefix = "datasource", name = "engine", havingValue = "mysql")
+@JpaComponent
 public class UserJpaRepositoryAdapter implements UserPort {
 
   private final UsersJpaRepository usersJpaRepository;
@@ -34,7 +35,7 @@ public class UserJpaRepositoryAdapter implements UserPort {
 
   @Override
   public DomainUser createUser(final DomainUser domainUser) {
-    User user = userMapper.apply(domainUser);
+    User user = userMapper.apply((JpaDomainUser) domainUser);
 
     User savedUser = usersJpaRepository.saveAndFlush(user);
 
@@ -43,7 +44,7 @@ public class UserJpaRepositoryAdapter implements UserPort {
 
   @Override
   public DomainUser updateUser(final DomainUser domainUser) {
-    User user = userMapper.apply(domainUser);
+    User user = userMapper.apply((JpaDomainUser) domainUser);
 
     User updatedUser = usersJpaRepository.saveAndFlush(user);
 

@@ -1,22 +1,45 @@
 package hex.arch.gian.infraestructure.rest.mappers.users;
 
+import hex.arch.gian.config.exceptions.ValidationException;
+import hex.arch.gian.config.properties.ProjectConfig;
+import hex.arch.gian.config.properties.enums.DataSourceEngineEnum;
 import hex.arch.gian.domain.models.users.DomainUser;
+import hex.arch.gian.domain.models.users.JpaDomainUser;
+import hex.arch.gian.domain.models.users.MongoDomainUser;
 import hex.arch.gian.infraestructure.rest.models.users.UserRequest;
-import org.springframework.stereotype.Component;
-
 import java.util.function.Function;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 
 @Component
 public class UserRequestToDomainUserMapper implements Function<UserRequest, DomainUser> {
 
+  private final DataSourceEngineEnum dataSourceEngineEnum;
+
+  public UserRequestToDomainUserMapper(ProjectConfig projectConfig) {
+    dataSourceEngineEnum = projectConfig.getProjectDatasourceEngine();
+  }
+
   @Override
   public DomainUser apply(UserRequest userRequest) {
-    return DomainUser.builder()
-        .id(userRequest.getUserDTO().getId())
-        .name(userRequest.getUserDTO().getName())
-        .surname(userRequest.getUserDTO().getSurname())
-        .userType(userRequest.getUserDTO().getUserType())
-        .birthDate(userRequest.getUserDTO().getBirthDate())
-        .build();
+    DomainUser domainUser;
+
+    if (DataSourceEngineEnum.MYSQL.equals(dataSourceEngineEnum)) {
+      domainUser = JpaDomainUser.builder().id(userRequest.getUserDTO().getId()).build();
+    } else if (DataSourceEngineEnum.MONGODB.equals(dataSourceEngineEnum)) {
+      domainUser =
+          MongoDomainUser.builder().externalId(userRequest.getUserDTO().getExternalId()).build();
+    } else {
+      throw new ValidationException(
+          HttpStatus.INTERNAL_SERVER_ERROR,
+          "DataSourceEngine property is not configured for User model");
+    }
+
+    domainUser.setName(userRequest.getUserDTO().getName());
+    domainUser.setSurname(userRequest.getUserDTO().getSurname());
+    domainUser.setUserType(userRequest.getUserDTO().getUserType());
+    domainUser.setBirthDate(userRequest.getUserDTO().getBirthDate());
+
+    return domainUser;
   }
 }

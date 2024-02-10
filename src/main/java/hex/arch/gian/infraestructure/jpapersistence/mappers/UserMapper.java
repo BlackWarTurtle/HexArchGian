@@ -1,16 +1,17 @@
 package hex.arch.gian.infraestructure.jpapersistence.mappers;
 
 import hex.arch.gian.domain.models.users.DomainUser;
+import hex.arch.gian.domain.models.users.JpaDomainUser;
 import hex.arch.gian.infraestructure.jpapersistence.models.users.User;
 import java.util.function.Function;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 @Component
-public class UserMapper implements Function<DomainUser, User> {
+public class UserMapper implements Function<JpaDomainUser, User> {
 
   @Override
-  public User apply(DomainUser domainUser) {
+  public User apply(JpaDomainUser domainUser) {
     var userBuilder = User.builder();
 
     if (!ObjectUtils.isEmpty(domainUser.getId())) {

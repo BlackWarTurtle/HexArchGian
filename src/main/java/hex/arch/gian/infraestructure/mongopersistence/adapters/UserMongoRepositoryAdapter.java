@@ -1,18 +1,19 @@
 package hex.arch.gian.infraestructure.mongopersistence.adapters;
 
+import hex.arch.gian.annotations.mongo.MongoComponent;
 import hex.arch.gian.domain.models.users.DomainUser;
+import hex.arch.gian.domain.models.users.MongoDomainUser;
 import hex.arch.gian.domain.ports.secondaries.users.UserPort;
 import hex.arch.gian.infraestructure.mongopersistence.models.User;
 import hex.arch.gian.infraestructure.mongopersistence.repositories.UserMongoRepository;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@ConditionalOnProperty(prefix = "datasource", name = "engine", havingValue = "mongodb")
+@MongoComponent
 public class UserMongoRepositoryAdapter implements UserPort {
 
   private final UserMongoRepository userMongoRepository;
@@ -31,7 +32,7 @@ public class UserMongoRepositoryAdapter implements UserPort {
 
   @Override
   public DomainUser createUser(DomainUser domainUser) {
-    User userToBeSaved = buildUser(domainUser);
+    User userToBeSaved = buildUser((MongoDomainUser) domainUser);
 
     User savedUser = userMongoRepository.save(userToBeSaved);
 
@@ -44,8 +45,7 @@ public class UserMongoRepositoryAdapter implements UserPort {
   }
 
   @Override
-  public void deleteUserById(long codUser) {
-  }
+  public void deleteUserById(long codUser) {}
 
   @Override
   public boolean existsById(long codUser) {
@@ -53,14 +53,14 @@ public class UserMongoRepositoryAdapter implements UserPort {
   }
 
   private DomainUser buildDomainUser(User user) {
-    return DomainUser.builder()
+    return MongoDomainUser.builder()
         .externalId(user.getId())
         .name(user.getName())
         .surname(user.getSurname())
         .build();
   }
 
-  private User buildUser(DomainUser domainUser) {
+  private User buildUser(MongoDomainUser domainUser) {
     return User.builder()
         .id(domainUser.getExternalId())
         .name(domainUser.getName())
