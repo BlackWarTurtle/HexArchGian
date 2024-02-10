@@ -7,14 +7,15 @@ import hex.arch.gian.infraestructure.rest.validators.users.Adult;
 import jakarta.validation.GroupSequence;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Getter;
-
 import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@Builder
+@SuperBuilder
 @GroupSequence({UserDTO.class, FirstOrder.class, SecondOrder.class})
+@NoArgsConstructor
 public class UserDTO {
   private Long id;
   @NotEmpty private String name;
@@ -25,4 +26,6 @@ public class UserDTO {
   @NotNull(groups = FirstOrder.class)
   @Adult(groups = SecondOrder.class)
   private LocalDateTime birthDate;
+
+  private String externalId;
 }

@@ -56,10 +56,6 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void deleteUserById(final long codUser) {
-    if (!userPort.existsById(codUser)) {
-      throw buildExceptionWhenNotFoundUser();
-    }
-
     userPort.deleteUserById(codUser);
   }
 

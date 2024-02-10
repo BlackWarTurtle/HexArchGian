@@ -16,4 +16,6 @@ public class DomainUser implements Serializable {
     private String surname;
     private UserTypeEnum userType;
     private LocalDateTime birthDate;
+
+    private String externalId;
 }

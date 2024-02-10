@@ -17,6 +17,7 @@ public class DomainUserMapper implements Function<DomainUser, UserDTO> {
         .surname(domainUser.getSurname())
         .userType(domainUser.getUserType())
         .birthDate(domainUser.getBirthDate())
+        .externalId(domainUser.getExternalId())
         .build();
   }
 }

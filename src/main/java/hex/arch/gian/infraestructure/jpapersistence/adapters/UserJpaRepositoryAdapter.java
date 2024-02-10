@@ -9,10 +9,12 @@ import hex.arch.gian.infraestructure.jpapersistence.repositories.UsersJpaReposit
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@ConditionalOnProperty(prefix = "datasource", name = "engine", havingValue = "mysql")
 public class UserJpaRepositoryAdapter implements UserPort {
 
   private final UsersJpaRepository usersJpaRepository;
