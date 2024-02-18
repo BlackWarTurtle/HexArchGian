@@ -13,7 +13,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserRequestToDomainUserMapper implements Function<UserRequest, DomainUser> {
-
+  private static final String DATASOURCE_PROPERTY_NOT_CONFIGURED_FOR_USER =
+      "datasource.property.not.configured.for.user";
   private final DataSourceEngineEnum dataSourceEngineEnum;
 
   public UserRequestToDomainUserMapper(ProjectConfig projectConfig) {
@@ -31,8 +32,7 @@ public class UserRequestToDomainUserMapper implements Function<UserRequest, Doma
           MongoDomainUser.builder().externalId(userRequest.getUserDTO().getExternalId()).build();
     } else {
       throw new ValidationException(
-          HttpStatus.INTERNAL_SERVER_ERROR,
-          "DataSourceEngine property is not configured for User model");
+          HttpStatus.INTERNAL_SERVER_ERROR, DATASOURCE_PROPERTY_NOT_CONFIGURED_FOR_USER);
     }
 
     domainUser.setName(userRequest.getUserDTO().getName());
