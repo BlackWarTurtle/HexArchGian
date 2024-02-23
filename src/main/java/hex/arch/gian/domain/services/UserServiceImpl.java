@@ -22,11 +22,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-  private static final String USER_NOT_FOUND_EXCEPTION_MSG = "User Not Found";
+  private static final String USER_NOT_FOUND_EXCEPTION_MSG = "user.not.found";
 
   private final UserPort userPort;
 

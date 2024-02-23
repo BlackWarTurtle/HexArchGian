@@ -5,9 +5,11 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import hex.arch.gian.annotations.mongo.MongoComponent;
+import hex.arch.gian.config.project.ProjectConfig;
 import jakarta.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Collections;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
@@ -15,7 +17,10 @@ import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 @Configuration
 @PropertySource("classpath:application.properties")
 @MongoComponent
+@RequiredArgsConstructor
 public class MongoConfig extends AbstractMongoClientConfiguration {
+
+  private final ProjectConfig projectConfig;
 
   private static final String MONGO_BASE_PACKAGE = "hex.arch.gian.infraestructure.mongopersistence";
 
@@ -27,7 +32,12 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
   @Override
   public @NotNull MongoClient mongoClient() {
     ConnectionString connectionString =
-        new ConnectionString("mongodb://localhost:27017" + "/" + "hexarchdb");
+        new ConnectionString(
+            "mongodb://"
+                + projectConfig.getDatasourceHostNameByProfile()
+                + ":27017"
+                + "/"
+                + "hexarchdb");
     MongoClientSettings mongoClientSettings =
         MongoClientSettings.builder().applyConnectionString(connectionString).build();
 
