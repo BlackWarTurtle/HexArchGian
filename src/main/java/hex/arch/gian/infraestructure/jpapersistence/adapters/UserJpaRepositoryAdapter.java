@@ -11,9 +11,7 @@ import hex.arch.gian.infraestructure.jpapersistence.repositories.UsersJpaReposit
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
 @RequiredArgsConstructor
 @JpaComponent
 public class UserJpaRepositoryAdapter implements UserPort {

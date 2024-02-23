@@ -1,4 +1,4 @@
-package hex.arch.gian.config.properties.enums;
+package hex.arch.gian.config.project.properties.enums;
 
 
 public enum DataSourceEngineEnum {

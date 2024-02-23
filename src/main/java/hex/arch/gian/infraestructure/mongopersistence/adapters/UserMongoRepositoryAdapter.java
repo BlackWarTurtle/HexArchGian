@@ -9,9 +9,7 @@ import hex.arch.gian.infraestructure.mongopersistence.repositories.UserMongoRepo
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
 @RequiredArgsConstructor
 @MongoComponent
 public class UserMongoRepositoryAdapter implements UserPort {

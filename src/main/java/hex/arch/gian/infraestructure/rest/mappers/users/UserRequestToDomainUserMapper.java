@@ -1,8 +1,8 @@
 package hex.arch.gian.infraestructure.rest.mappers.users;
 
 import hex.arch.gian.config.exceptions.ValidationException;
-import hex.arch.gian.config.properties.ProjectConfig;
-import hex.arch.gian.config.properties.enums.DataSourceEngineEnum;
+import hex.arch.gian.config.project.properties.ProjectPropertiesConfig;
+import hex.arch.gian.config.project.properties.enums.DataSourceEngineEnum;
 import hex.arch.gian.domain.models.users.DomainUser;
 import hex.arch.gian.domain.models.users.JpaDomainUser;
 import hex.arch.gian.domain.models.users.MongoDomainUser;
@@ -17,8 +17,8 @@ public class UserRequestToDomainUserMapper implements Function<UserRequest, Doma
       "datasource.property.not.configured.for.user";
   private final DataSourceEngineEnum dataSourceEngineEnum;
 
-  public UserRequestToDomainUserMapper(ProjectConfig projectConfig) {
-    dataSourceEngineEnum = projectConfig.getProjectDatasourceEngine();
+  public UserRequestToDomainUserMapper(ProjectPropertiesConfig projectPropertiesConfig) {
+    dataSourceEngineEnum = projectPropertiesConfig.getProjectDatasourceEngine();
   }
 
   @Override
