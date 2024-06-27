@@ -5,6 +5,7 @@ import hex.arch.gian.infraestructure.jpapersistence.models.exams.Exam;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 

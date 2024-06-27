@@ -1,7 +1,10 @@
 package hex.arch.gian.domain.models.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import hex.arch.gian.config.exceptions.ValidationException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 import java.util.Arrays;
 import java.util.HashMap;
