@@ -21,7 +21,7 @@ public class JpaConfig {
     dataSource.setUrl(
         "jdbc:mysql://"
             + projectConfig.getDatasourceHostNameByProfile()
-            + ":3306/hex_arch_database"); // jdbc:mysql://mysql-server:3306/hex_arch_database
+            + ":3307/hex_arch_database"); // jdbc:mysql://mysql-server:3306/hex_arch_database
     dataSource.setUsername("root");
     dataSource.setPassword("admin");
     return dataSource;
