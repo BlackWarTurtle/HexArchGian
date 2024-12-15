@@ -2,7 +2,6 @@ package hex.arch.gian.infraestructure.jpapersistence.adapters;
 
 import hex.arch.gian.annotations.jpa.JpaComponent;
 import hex.arch.gian.domain.models.users.DomainUser;
-import hex.arch.gian.domain.models.users.JpaDomainUser;
 import hex.arch.gian.domain.ports.secondaries.users.UserPort;
 import hex.arch.gian.infraestructure.jpapersistence.mappers.UserMapper;
 import hex.arch.gian.infraestructure.jpapersistence.mappers.UserToDomainMapper;
@@ -33,7 +32,7 @@ public class UserJpaRepositoryAdapter implements UserPort {
 
   @Override
   public DomainUser createUser(final DomainUser domainUser) {
-    User user = userMapper.apply((JpaDomainUser) domainUser);
+    User user = userMapper.apply(domainUser);
 
     User savedUser = usersJpaRepository.saveAndFlush(user);
 
@@ -42,7 +41,7 @@ public class UserJpaRepositoryAdapter implements UserPort {
 
   @Override
   public DomainUser updateUser(final DomainUser domainUser) {
-    User user = userMapper.apply((JpaDomainUser) domainUser);
+    User user = userMapper.apply(domainUser);
 
     User updatedUser = usersJpaRepository.saveAndFlush(user);
 

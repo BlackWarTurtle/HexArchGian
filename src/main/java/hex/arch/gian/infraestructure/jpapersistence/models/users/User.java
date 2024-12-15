@@ -3,11 +3,9 @@ package hex.arch.gian.infraestructure.jpapersistence.models.users;
 import hex.arch.gian.domain.models.enums.UserTypeEnum;
 import hex.arch.gian.infraestructure.jpapersistence.models.exams.Exam;
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.*;
 
 @Getter
 @Setter
@@ -32,6 +30,8 @@ public class User {
   @Column(name = "TYPE", nullable = false)
   private UserTypeEnum userType;
 
+  @Column(name = "PASSWORD", nullable = false)
+  private String password;
 
   @Column(name = "BIRTH_DATE", nullable = false)
   private LocalDateTime birthDate;

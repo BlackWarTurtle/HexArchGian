@@ -1,45 +1,27 @@
 package hex.arch.gian.infraestructure.rest.mappers.users;
 
-import hex.arch.gian.config.exceptions.ValidationException;
-import hex.arch.gian.config.project.properties.ProjectPropertiesConfig;
-import hex.arch.gian.config.project.properties.enums.DataSourceEngineEnum;
+import hex.arch.gian.config.security.services.EncodingService;
 import hex.arch.gian.domain.models.users.DomainUser;
-import hex.arch.gian.domain.models.users.JpaDomainUser;
-import hex.arch.gian.domain.models.users.MongoDomainUser;
 import hex.arch.gian.infraestructure.rest.models.users.UserRequest;
 import java.util.function.Function;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserRequestToDomainUserMapper implements Function<UserRequest, DomainUser> {
-  private static final String DATASOURCE_PROPERTY_NOT_CONFIGURED_FOR_USER =
-      "datasource.property.not.configured.for.user";
-  private final DataSourceEngineEnum dataSourceEngineEnum;
+  private final EncodingService encodingService;
 
-  public UserRequestToDomainUserMapper(ProjectPropertiesConfig projectPropertiesConfig) {
-    dataSourceEngineEnum = projectPropertiesConfig.getProjectDatasourceEngine();
+  public UserRequestToDomainUserMapper(EncodingService encodingService) {
+    this.encodingService = encodingService;
   }
 
   @Override
   public DomainUser apply(UserRequest userRequest) {
-    DomainUser domainUser;
-
-    if (DataSourceEngineEnum.MYSQL.equals(dataSourceEngineEnum)) {
-      domainUser = JpaDomainUser.builder().id(userRequest.getUserDTO().getId()).build();
-    } else if (DataSourceEngineEnum.MONGODB.equals(dataSourceEngineEnum)) {
-      domainUser =
-          MongoDomainUser.builder().externalId(userRequest.getUserDTO().getExternalId()).build();
-    } else {
-      throw new ValidationException(
-          HttpStatus.INTERNAL_SERVER_ERROR, DATASOURCE_PROPERTY_NOT_CONFIGURED_FOR_USER);
-    }
-
-    domainUser.setName(userRequest.getUserDTO().getName());
-    domainUser.setSurname(userRequest.getUserDTO().getSurname());
-    domainUser.setUserType(userRequest.getUserDTO().getUserType());
-    domainUser.setBirthDate(userRequest.getUserDTO().getBirthDate());
-
-    return domainUser;
+    return DomainUser.builder()
+        .name(userRequest.getUserDTO().getName())
+        .surname(userRequest.getUserDTO().getSurname())
+        .userType(userRequest.getUserDTO().getUserType())
+        .birthDate(userRequest.getUserDTO().getBirthDate())
+        .password(encodingService.applyHash(userRequest.getUserDTO().getPassword()))
+        .build();
   }
 }

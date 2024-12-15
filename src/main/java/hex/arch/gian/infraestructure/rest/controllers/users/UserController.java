@@ -1,6 +1,8 @@
 package hex.arch.gian.infraestructure.rest.controllers.users;
 
 import hex.arch.gian.infraestructure.rest.adapters.users.UserAdapter;
+import hex.arch.gian.infraestructure.rest.models.login.UserLoginRequest;
+import hex.arch.gian.infraestructure.rest.models.login.UserLoginResponse;
 import hex.arch.gian.infraestructure.rest.models.users.UserDTO;
 import hex.arch.gian.infraestructure.rest.models.users.createuser.CreateUserRequest;
 import hex.arch.gian.infraestructure.rest.models.users.createuser.CreateUserResponse;
@@ -36,11 +38,16 @@ public class UserController {
     return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
   }
 
-  @PostMapping
+  @PostMapping("/register")
   public ResponseEntity<CreateUserResponse> createUser(
       @RequestBody @Valid CreateUserRequest createUserRequest) {
-
     return new ResponseEntity<>(userAdapter.createUser(createUserRequest), HttpStatus.CREATED);
+  }
+
+  @PostMapping("/login")
+  public ResponseEntity<UserLoginResponse> loginUser(
+          @RequestBody @Valid UserLoginRequest userLoginRequest) {
+    return new ResponseEntity<>(userAdapter.loginUser(userLoginRequest), HttpStatus.OK);
   }
 
   @PutMapping("/{codUser}")

@@ -1,9 +1,12 @@
 package hex.arch.gian.infraestructure.rest.adapters.users;
 
 import hex.arch.gian.domain.models.users.DomainUser;
+import hex.arch.gian.domain.ports.primaries.login.users.UserLoginService;
 import hex.arch.gian.domain.ports.primaries.users.UserService;
 import hex.arch.gian.infraestructure.rest.mappers.users.DomainUserMapper;
 import hex.arch.gian.infraestructure.rest.mappers.users.UserRequestToDomainUserMapper;
+import hex.arch.gian.infraestructure.rest.models.login.UserLoginRequest;
+import hex.arch.gian.infraestructure.rest.models.login.UserLoginResponse;
 import hex.arch.gian.infraestructure.rest.models.users.UserDTO;
 import hex.arch.gian.infraestructure.rest.models.users.createuser.CreateUserRequest;
 import hex.arch.gian.infraestructure.rest.models.users.createuser.CreateUserResponse;
@@ -18,6 +21,8 @@ import org.springframework.stereotype.Component;
 public class UserAdapter {
 
   private final UserService userService;
+  private final UserLoginService userLoginService;
+
   private final DomainUserMapper domainUserMapper;
   private final UserRequestToDomainUserMapper userRequestToDomainUserMapper;
 
@@ -31,7 +36,6 @@ public class UserAdapter {
   }
 
   public CreateUserResponse createUser(final CreateUserRequest createUserRequest) {
-
     DomainUser createdUser =
         userService.createUser(userRequestToDomainUserMapper.apply(createUserRequest));
 
@@ -53,5 +57,15 @@ public class UserAdapter {
 
   public void createGraph() {
     userService.createGraph();
+  }
+
+  public UserLoginResponse loginUser(UserLoginRequest userLoginRequest) {
+    DomainUser domainUser =
+        DomainUser.builder()
+            .name(userLoginRequest.name())
+            .password(userLoginRequest.password())
+            .build();
+
+    return UserLoginResponse.builder().token(userLoginService.authenticate(domainUser)).build();
   }
 }

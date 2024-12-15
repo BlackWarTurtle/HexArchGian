@@ -17,7 +17,7 @@ import lombok.experimental.SuperBuilder;
 @GroupSequence({UserDTO.class, FirstOrder.class, SecondOrder.class})
 @NoArgsConstructor
 public class UserDTO {
-  private Long id;
+  private String id;
   @NotEmpty private String name;
   @NotEmpty private String surname;
   @NotNull private UserTypeEnum userType;
@@ -27,5 +27,6 @@ public class UserDTO {
   @Adult(groups = SecondOrder.class)
   private LocalDateTime birthDate;
 
-  private String externalId;
+  @NotEmpty
+  private String password;
 }

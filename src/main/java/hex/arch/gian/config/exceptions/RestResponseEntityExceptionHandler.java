@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpStatus;
@@ -65,9 +66,16 @@ public class RestResponseEntityExceptionHandler {
 
   @ExceptionHandler(ValidationException.class)
   public ProblemDetail handleValidationExceptions(ValidationException exception) {
-    String translatedMsg =
-        messageSource.getMessage(
-            exception.getErrorMessage(), null, LocaleContextHolder.getLocale());
-    return ProblemDetail.forStatusAndDetail(exception.getHttpStatus(), translatedMsg);
+    String message;
+
+    try {
+      message =
+          messageSource.getMessage(
+              exception.getErrorMessage(), null, LocaleContextHolder.getLocale());
+    } catch (NoSuchMessageException noSuchMessageException) {
+      message = exception.getErrorMessage();
+    }
+
+    return ProblemDetail.forStatusAndDetail(exception.getHttpStatus(), message);
   }
 }
