@@ -1,5 +1,6 @@
 package hex.arch.gian.config.security.services;
 
+import hex.arch.gian.config.constants.SecurityConstants;
 import hex.arch.gian.config.exceptions.ValidationException;
 import hex.arch.gian.domain.models.users.DomainUser;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
       authenticationManager.authenticate(
           new UsernamePasswordAuthenticationToken(domainUser.getName(), domainUser.getPassword()));
     } catch (AuthenticationException exception) {
-      throw new ValidationException(HttpStatus.UNAUTHORIZED, "bad.credentials");
+      throw new ValidationException(
+          HttpStatus.UNAUTHORIZED, SecurityConstants.BAD_CREDENTIALS_ERROR_LITERAL);
     }
 
     UserDetails userDetails = userDetailsService.loadUserByUsername(domainUser.getName());
